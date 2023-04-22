@@ -9,9 +9,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.zkrallah.z_habits.R
 import com.zkrallah.z_habits.adapter.HabitsAdapter
+import com.zkrallah.z_habits.adapter.HistoryAdapter
 import com.zkrallah.z_habits.databinding.ActivityHabitsBinding
 import com.zkrallah.z_habits.local.entities.Habits
 import com.zkrallah.z_habits.local.entities.History
@@ -37,6 +39,54 @@ class HabitsActivity : AppCompatActivity() {
         binding.addFab.setOnClickListener {
             buildAddHabitAlertDialog()
             dialog.show()
+        }
+    }
+
+    private fun updateUI() {
+        viewModel.getHistory()
+        viewModel.habits.observe(this) {
+            it?.let { habits ->
+                val adapter = HabitsAdapter(habits as MutableList<Habits>)
+                binding.recyclerHabits.adapter = adapter
+                val layoutManager =
+                    LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+                binding.recyclerHabits.layoutManager = layoutManager
+
+                adapter.setItemClickListener(object : HabitsAdapter.OnItemClickListener {
+                    override fun onShowHistoryClicked(habits: Habits) {
+                        buildHistoryAlertDialog(habits)
+                        dialog.show()
+                    }
+
+                    override fun onAddCountClicked(habits: Habits) {
+                        val date = formatter.format(calendar.time).toString()
+                        viewModel.checkTodayHistory(habits.habitId, date)
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            var history: History? = viewModel.history.value
+                            if (history == null) {
+                                history = History(
+                                    habits.habitId,
+                                    habits.name,
+                                    1,
+                                    habits.countPerDay,
+                                    date
+                                )
+                                viewModel.insertHistory(history)
+                            } else {
+                                if (history.countDone == history.countPerDay) history.countDone = 0
+                                else history.countDone++
+                                viewModel.updateHistory(history)
+                            }
+                            Snackbar.make(
+                                binding.root,
+                                "${history.habitName} is now ${history.countDone} from ${history.countPerDay}",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }, 500)
+                    }
+
+                })
+            }
         }
     }
 
@@ -72,50 +122,31 @@ class HabitsActivity : AppCompatActivity() {
         dialog = builder.create()
     }
 
-    private fun updateUI() {
-        viewModel.getHistory()
-        viewModel.habits.observe(this) {
-            it?.let { habits ->
-                val adapter = HabitsAdapter(habits as MutableList<Habits>)
-                binding.recyclerHabits.adapter = adapter
-                val layoutManager =
-                    LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-                binding.recyclerHabits.layoutManager = layoutManager
+    private fun buildHistoryAlertDialog(habits: Habits) {
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.habit_history_dialog, null)
+        val builder = AlertDialog.Builder(this@HabitsActivity)
 
-                adapter.setItemClickListener(object : HabitsAdapter.OnItemClickListener {
-                    override fun onShowHistoryClicked(habits: Habits) {
-                        TODO("Not yet implemented")
-                    }
+        builder.setCancelable(true)
+        builder.setTitle("HABIT HISTORY")
+        val recycler = dialogView.findViewById<RecyclerView>(R.id.recycler_habit_history)
+        recycler.layoutManager =
+            LinearLayoutManager(this@HabitsActivity, LinearLayoutManager.VERTICAL, false)
 
-                    override fun onAddCountClicked(habits: Habits) {
-                        val date = formatter.format(calendar.time).toString()
-                        viewModel.checkTodayHistory(habits.habitId, date)
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            var history: History? = viewModel.history.value
-                            if (history == null) {
-                                history = History(
-                                    habits.habitId,
-                                    habits.name,
-                                    1,
-                                    habits.countPerDay,
-                                    date
-                                )
-                                viewModel.insertHistory(history)
-                            } else {
-                                if (history.countDone == history.countPerDay) history.countDone = 0
-                                else history.countDone++
-                                viewModel.updateHistory(history)
-                            }
-                            Snackbar.make(
-                                binding.root,
-                                "${history.habitName} is now ${history.countDone} from ${history.countPerDay}",
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                        }, 500)
+        viewModel.getHabitHistory(habits.habitId)
+        viewModel.habitHistory.observe(this@HabitsActivity) {
+            it?.let {
+                val historyAdapter = HistoryAdapter(it.history)
+                historyAdapter.setItemClickListener(object : HistoryAdapter.OnItemClickListener{
+                    override fun onDeleteClicker(history: History) {
+                        viewModel.deleteHistory(history.historyId)
                     }
 
                 })
+                recycler.adapter = historyAdapter
             }
         }
+        builder.setView(dialogView)
+        dialog = builder.create()
     }
 }
