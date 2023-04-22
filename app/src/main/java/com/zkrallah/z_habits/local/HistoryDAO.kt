@@ -18,7 +18,7 @@ interface HistoryDAO {
     @Query("DELETE from history_table WHERE historyId = :historyId")
     suspend fun deleteHistory(historyId: Long): Int
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
+    @Update
     suspend fun updateHistory(history: History)
 
 }
