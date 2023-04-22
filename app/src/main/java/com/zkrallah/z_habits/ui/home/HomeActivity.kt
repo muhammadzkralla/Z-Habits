@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.zkrallah.z_habits.databinding.ActivityHomeBinding
 import com.zkrallah.z_habits.ui.habits.HabitsActivity
+import com.zkrallah.z_habits.ui.history.HistoryActivity
 
 class HomeActivity : AppCompatActivity() {
 
@@ -17,6 +18,10 @@ class HomeActivity : AppCompatActivity() {
 
         binding.habitsCard.setOnClickListener {
             startActivity(Intent(this@HomeActivity, HabitsActivity::class.java))
+        }
+
+        binding.historyCard.setOnClickListener {
+            startActivity(Intent(this@HomeActivity, HistoryActivity::class.java))
         }
     }
 }

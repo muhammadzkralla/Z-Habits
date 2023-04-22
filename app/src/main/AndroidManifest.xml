@@ -4,8 +4,8 @@
     package="com.zkrallah.z_habits">
 
     <application
+        android:name=".HabitsApp"
         android:allowBackup="true"
-        android:name="HabitsApp"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -15,8 +15,13 @@
         android:theme="@style/Theme.ZHabits"
         tools:targetApi="31">
         <activity
+            android:name=".ui.history.HistoryActivity"
+            android:exported="false"
+            android:label="History"/>
+        <activity
             android:name=".ui.habits.HabitsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Habits"/>
         <activity
             android:name=".ui.home.HomeActivity"
             android:exported="false" />
