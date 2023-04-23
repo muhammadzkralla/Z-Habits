@@ -1,12 +1,11 @@
 package com.zkrallah.z_habits.ui.habits
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -61,29 +60,38 @@ class HabitsActivity : AppCompatActivity() {
                     override fun onAddCountClicked(habits: Habits) {
                         val date = formatter.format(calendar.time).toString()
                         viewModel.checkTodayHistory(habits.habitId, date)
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            var history: History? = viewModel.history.value
-                            if (history == null) {
-                                history = History(
-                                    habits.habitId,
-                                    habits.name,
-                                    1,
-                                    habits.countPerDay,
-                                    date
-                                )
-                                viewModel.insertHistory(history)
-                            } else {
-                                if (history.countDone == history.countPerDay) history.countDone = 0
-                                else history.countDone++
-                                viewModel.updateHistory(history)
+
+                        viewModel.state.observe(this@HabitsActivity, object : Observer<Boolean>{
+                            override fun onChanged(value: Boolean) {
+                                if (value){
+                                    var history: History? = viewModel.history.value
+                                    if (history == null) {
+                                        history = History(
+                                            habits.habitId,
+                                            habits.name,
+                                            1,
+                                            habits.countPerDay,
+                                            date
+                                        )
+                                        viewModel.insertHistory(history)
+                                    } else {
+                                        if (history.countDone == history.countPerDay) history.countDone = 0
+                                        else history.countDone++
+                                        viewModel.updateHistory(history)
+                                    }
+                                    Snackbar.make(
+                                        binding.root,
+                                        "${history.habitName} is now ${history.countDone} from ${history.countPerDay}",
+                                        Snackbar.LENGTH_SHORT
+                                    ).show()
+                                    viewModel.state.removeObserver(this)
+                                    viewModel.clearTodayHistory()
+                                    viewModel.state.value = false
+                                }
                             }
-                            Snackbar.make(
-                                binding.root,
-                                "${history.habitName} is now ${history.countDone} from ${history.countPerDay}",
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                        }, 500)
-                    }
+                        }
+                        )
+                        }
 
                 })
             }
