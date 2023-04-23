@@ -12,6 +12,9 @@ interface HistoryDAO {
     @Query("select * from history_table WHERE date = :date and habitId = :habitId")
     fun getTodayHistory(date: String, habitId: Long): History?
 
+    @Query("select * from history_table WHERE date = :date")
+    fun getAllTodayHistory(date: String): List<History>?
+
     @Insert
     suspend fun insertHistory(history: History?)
 
