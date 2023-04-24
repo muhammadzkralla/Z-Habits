@@ -19,6 +19,7 @@ class HabitsAdapter(private val list: MutableList<Habits>) :
 
         fun onShowHistoryClicked(habits: Habits)
         fun onAddCountClicked(habits: Habits)
+        fun onDeleteHabitClicked(habits: Habits, position: Int)
 
     }
 
@@ -44,11 +45,17 @@ class HabitsAdapter(private val list: MutableList<Habits>) :
         return list.size
     }
 
+    fun removeItem(position: Int){
+        list.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     inner class ViewHolder(itemView: View, listener: OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
         val habitName: TextView = itemView.findViewById(R.id.habit_name)
         val habitCount: TextView = itemView.findViewById(R.id.habit_count)
         private val showHistory: ImageButton = itemView.findViewById(R.id.show_history)
         private val addCount: ImageButton = itemView.findViewById(R.id.add_count)
+        private val deleteBtn: ImageButton = itemView.findViewById(R.id.delete_habit)
 
         init {
             showHistory.setOnClickListener {
@@ -56,6 +63,9 @@ class HabitsAdapter(private val list: MutableList<Habits>) :
             }
             addCount.setOnClickListener {
                 listener.onAddCountClicked(list[adapterPosition])
+            }
+            deleteBtn.setOnClickListener {
+                listener.onDeleteHabitClicked(list[adapterPosition], adapterPosition)
             }
         }
     }

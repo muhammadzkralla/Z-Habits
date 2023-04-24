@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zkrallah.z_habits.R
 import com.zkrallah.z_habits.local.entities.History
 
-class HistoryAdapter(private val list: List<History>) : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
+class HistoryAdapter(private val list: MutableList<History>) : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
 
     private lateinit var mListener: OnItemClickListener
 
     interface OnItemClickListener {
 
-        fun onDeleteClicker(history: History)
+        fun onDeleteClicked(history: History, position: Int)
 
     }
 
@@ -43,16 +43,20 @@ class HistoryAdapter(private val list: List<History>) : RecyclerView.Adapter<His
         return list.size
     }
 
+    fun removeItem(position: Int){
+        list.removeAt(position)
+        notifyItemRemoved(position)
+    }
     inner class ViewHolder(itemView: View, listener: OnItemClickListener) : RecyclerView.ViewHolder(itemView){
         val habitName: TextView = itemView.findViewById(R.id.habit_name)
         val date: TextView = itemView.findViewById(R.id.date)
         val habitCount: TextView = itemView.findViewById(R.id.count)
         val historyId: TextView = itemView.findViewById(R.id.history_id)
-        val deleteBtn: ImageButton = itemView.findViewById(R.id.delete)
+        private val deleteBtn: ImageButton = itemView.findViewById(R.id.delete)
 
         init {
             deleteBtn.setOnClickListener {
-                listener.onDeleteClicker(list[adapterPosition])
+                listener.onDeleteClicked(list[adapterPosition], adapterPosition)
             }
         }
     }

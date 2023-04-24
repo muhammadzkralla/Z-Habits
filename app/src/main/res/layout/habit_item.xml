@@ -64,7 +64,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/img"
+                app:layout_constraintEnd_toStartOf="@+id/add_count"
                 android:src="@drawable/ic_baseline_history_24"/>
 
             <ImageButton
@@ -74,8 +74,18 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/show_history"
+                app:layout_constraintEnd_toStartOf="@+id/delete_habit"
                 android:src="@drawable/ic_baseline_playlist_add_check_24"/>
+
+            <ImageButton
+                android:id="@+id/delete_habit"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/img"
+                android:src="@drawable/ic_baseline_delete_24"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

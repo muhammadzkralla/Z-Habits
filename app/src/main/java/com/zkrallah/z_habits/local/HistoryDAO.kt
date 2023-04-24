@@ -15,13 +15,13 @@ interface HistoryDAO {
     @Query("select * from history_table WHERE date = :date")
     fun getAllTodayHistory(date: String): List<History>?
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertHistory(history: History?)
 
     @Query("DELETE from history_table WHERE historyId = :historyId")
     suspend fun deleteHistory(historyId: Long): Int
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateHistory(history: History)
 
 }

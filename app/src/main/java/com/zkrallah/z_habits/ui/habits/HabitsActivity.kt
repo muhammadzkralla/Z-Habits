@@ -26,6 +26,7 @@ class HabitsActivity : AppCompatActivity() {
     private lateinit var dialog: AlertDialog
     private val calendar: Calendar = Calendar.getInstance()
     private val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT)
+    private lateinit var adapter: HabitsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +46,8 @@ class HabitsActivity : AppCompatActivity() {
         viewModel.getHistory()
         viewModel.habits.observe(this) {
             it?.let { habits ->
-                val adapter = HabitsAdapter(habits as MutableList<Habits>)
+
+                adapter = HabitsAdapter(habits as MutableList<Habits>)
                 binding.recyclerHabits.adapter = adapter
                 val layoutManager =
                     LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -63,7 +65,7 @@ class HabitsActivity : AppCompatActivity() {
 
                         viewModel.state.observe(this@HabitsActivity, object : Observer<Boolean>{
                             override fun onChanged(value: Boolean) {
-                                if (value){
+                                if (value && habits.habitId != 0L){
                                     var history: History? = viewModel.history.value
                                     if (history == null) {
                                         history = History(
@@ -93,6 +95,11 @@ class HabitsActivity : AppCompatActivity() {
                         )
                         }
 
+                    override fun onDeleteHabitClicked(habits: Habits, position: Int) {
+                        viewModel.deleteHabit(habits.habitId)
+                        adapter.removeItem(position)
+                    }
+
                 })
             }
         }
@@ -118,6 +125,8 @@ class HabitsActivity : AppCompatActivity() {
                     edtCount.text.toString().toInt()
                 )
                 viewModel.insertHabit(habit)
+                finish()
+                startActivity(intent)
             } else
                 Toast
                     .makeText(
@@ -144,10 +153,11 @@ class HabitsActivity : AppCompatActivity() {
         viewModel.getHabitHistory(habits.habitId)
         viewModel.habitHistory.observe(this@HabitsActivity) {
             it?.let {
-                val historyAdapter = HistoryAdapter(it.history)
+                val historyAdapter = HistoryAdapter(it.history as MutableList<History>)
                 historyAdapter.setItemClickListener(object : HistoryAdapter.OnItemClickListener{
-                    override fun onDeleteClicker(history: History) {
+                    override fun onDeleteClicked(history: History, position: Int) {
                         viewModel.deleteHistory(history.historyId)
+                        historyAdapter.removeItem(position)
                     }
 
                 })

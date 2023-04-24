@@ -13,4 +13,21 @@ data class History(
 ) {
     @PrimaryKey(autoGenerate = true)
     var historyId: Long = 0L
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as History
+
+        if (habitName == other.habitName && date == other.date) return true
+
+        return false
+    }
+
+    override fun hashCode(): Int {
+        var result = habitId.hashCode()
+        result = 31 * result + habitName.hashCode()
+        return result
+    }
 }

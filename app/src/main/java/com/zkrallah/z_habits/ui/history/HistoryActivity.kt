@@ -27,15 +27,16 @@ class HistoryActivity : AppCompatActivity() {
         viewModel.getHistory()
         viewModel.history.observe(this) {
             it?.let {
-                val adapter = HistoryAdapter(it)
+                val adapter = HistoryAdapter(it as MutableList<History>)
                 binding.recyclerHistory.adapter = adapter
                 val layoutManager =
                     LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                 binding.recyclerHistory.layoutManager = layoutManager
 
                 adapter.setItemClickListener(object : HistoryAdapter.OnItemClickListener{
-                    override fun onDeleteClicker(history: History) {
+                    override fun onDeleteClicked(history: History, position: Int) {
                         viewModel.deleteHistory(history.historyId)
+                        adapter.removeItem(position)
                     }
 
                 })

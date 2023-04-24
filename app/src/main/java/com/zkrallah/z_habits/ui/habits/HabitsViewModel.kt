@@ -74,5 +74,11 @@ class HabitsViewModel : ViewModel() {
         }
     }
 
+    fun deleteHabit(habitId: Long){
+        viewModelScope.launch (Dispatchers.IO){
+            database.habitsDAO().deleteHabit(habitId)
+        }
+    }
+
 
 }
