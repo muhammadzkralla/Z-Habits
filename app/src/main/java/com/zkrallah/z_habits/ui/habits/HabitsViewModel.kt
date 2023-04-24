@@ -9,7 +9,6 @@ import com.zkrallah.z_habits.local.entities.HabitWithHistory
 import com.zkrallah.z_habits.local.entities.Habits
 import com.zkrallah.z_habits.local.entities.History
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class HabitsViewModel : ViewModel() {
