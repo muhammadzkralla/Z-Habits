@@ -9,6 +9,7 @@ import com.zkrallah.z_habits.local.entities.HabitWithHistory
 import com.zkrallah.z_habits.local.entities.Habits
 import com.zkrallah.z_habits.local.entities.History
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class HabitsViewModel : ViewModel() {
@@ -49,12 +50,10 @@ class HabitsViewModel : ViewModel() {
     }
 
     fun checkTodayHistory(habitId: Long, date: String) {
-        val job = viewModelScope.launch(Dispatchers.IO) {
-            _history.postValue(database.historyDAO().getTodayHistory(date, habitId))
-        }
-        viewModelScope.launch {
-            job.join()
-            _state.value = true
+        viewModelScope.launch(Dispatchers.IO) {
+            val job = async { database.historyDAO().getTodayHistory(date, habitId) }
+            _history.postValue(job.await())
+            _state.postValue(true)
         }
     }
 
