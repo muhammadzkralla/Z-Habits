@@ -26,7 +26,9 @@ class HabitsActivity : AppCompatActivity() {
     private lateinit var dialog: AlertDialog
     private val calendar: Calendar = Calendar.getInstance()
     private val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT)
+    val date = formatter.format(calendar.time).toString()
     private lateinit var adapter: HabitsAdapter
+    private var alertCounter = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,32 +62,25 @@ class HabitsActivity : AppCompatActivity() {
                     }
 
                     override fun onAddCountClicked(habits: Habits) {
-                        val date = formatter.format(calendar.time).toString()
                         viewModel.checkTodayHistory(habits.habitId, date)
 
                         viewModel.state.observe(this@HabitsActivity, object : Observer<Boolean>{
                             override fun onChanged(value: Boolean) {
-                                if (value && habits.habitId != 0L){
-                                    var history: History? = viewModel.history.value
-                                    if (history == null) {
-                                        history = History(
-                                            habits.habitId,
-                                            habits.name,
-                                            1,
-                                            habits.countPerDay,
-                                            date
-                                        )
-                                        viewModel.insertHistory(history)
-                                    } else {
+                                if (value){
+                                    val history: History? = viewModel.history.value
+                                    if (history != null) {
                                         if (history.countDone == history.countPerDay) history.countDone = 0
                                         else history.countDone++
                                         viewModel.updateHistory(history)
+                                        Snackbar.make(
+                                            binding.root,
+                                            "${history.habitName} is now ${history.countDone} from ${history.countPerDay}",
+                                            Snackbar.LENGTH_SHORT
+                                        ).show()
+                                    }else{
+                                        if (alertCounter == 0) buildStartNewHabitDialog(habits)
+                                        if (alertCounter == 1) dialog.show()
                                     }
-                                    Snackbar.make(
-                                        binding.root,
-                                        "${history.habitName} is now ${history.countDone} from ${history.countPerDay}",
-                                        Snackbar.LENGTH_SHORT
-                                    ).show()
                                     viewModel.state.removeObserver(this)
                                     viewModel.clearTodayHistory()
                                     viewModel.state.value = false
@@ -93,7 +88,7 @@ class HabitsActivity : AppCompatActivity() {
                             }
                         }
                         )
-                        }
+                    }
 
                     override fun onDeleteHabitClicked(habits: Habits, position: Int) {
                         viewModel.deleteHabit(habits.habitId)
@@ -103,6 +98,30 @@ class HabitsActivity : AppCompatActivity() {
                 })
             }
         }
+    }
+
+    private fun buildStartNewHabitDialog(habits: Habits) {
+        val builder = AlertDialog.Builder(this@HabitsActivity)
+        builder.setTitle("Start a new History?")
+        builder.setCancelable(false)
+        builder.setMessage("Click yes if you want to add a new history to this habit.")
+        builder.setPositiveButton("START"){_, _ ->
+            val history = History(
+                habits.habitId,
+                habits.name,
+                1,
+                habits.countPerDay,
+                date
+            )
+            viewModel.insertHistory(history)
+            alertCounter--
+        }
+        builder.setNegativeButton("CANCEL"){_,_ ->
+            dialog.dismiss()
+            alertCounter--
+        }
+        dialog = builder.create()
+        alertCounter++
     }
 
     private fun buildAddHabitAlertDialog() {

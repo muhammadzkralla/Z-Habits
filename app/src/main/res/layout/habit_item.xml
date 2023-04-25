@@ -53,9 +53,9 @@
                 android:id="@+id/img"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_launcher_background" />
+                android:layout_width="108dp"
+                android:layout_height="108dp"
+                android:src="@drawable/ic_baseline_panorama_fish_eye_24" />
 
             <ImageButton
                 android:id="@+id/show_history"
