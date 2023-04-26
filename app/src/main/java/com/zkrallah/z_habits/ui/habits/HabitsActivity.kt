@@ -1,5 +1,7 @@
 package com.zkrallah.z_habits.ui.habits
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.Toast
@@ -101,10 +103,10 @@ class HabitsActivity : AppCompatActivity() {
     }
 
     private fun buildStartNewHabitDialog(habits: Habits) {
-        val builder = AlertDialog.Builder(this@HabitsActivity)
+        val builder = AlertDialog.Builder(this@HabitsActivity, R.style.MyDialogTheme)
         builder.setTitle("Start a new History?")
         builder.setCancelable(false)
-        builder.setMessage("Click yes if you want to add a new history to this habit.")
+        builder.setMessage("Click start if you want to add a new history to this habit.")
         builder.setPositiveButton("START"){_, _ ->
             val history = History(
                 habits.habitId,
@@ -121,6 +123,7 @@ class HabitsActivity : AppCompatActivity() {
             alertCounter--
         }
         dialog = builder.create()
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         alertCounter++
     }
 
@@ -130,7 +133,7 @@ class HabitsActivity : AppCompatActivity() {
         val edtName = dialogView.findViewById<EditText>(R.id.edt_habit_name)
         val edtCount = dialogView.findViewById<EditText>(R.id.edt_habit_count)
 
-        val builder = AlertDialog.Builder(this@HabitsActivity)
+        val builder = AlertDialog.Builder(this@HabitsActivity, R.style.MyDialogTheme)
         builder.setView(dialogView)
         builder.setCancelable(true)
         builder.setTitle("ADD A HABIT")
@@ -156,12 +159,13 @@ class HabitsActivity : AppCompatActivity() {
                     .show()
         }
         dialog = builder.create()
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     private fun buildHistoryAlertDialog(habits: Habits) {
         val inflater = this.layoutInflater
         val dialogView = inflater.inflate(R.layout.habit_history_dialog, null)
-        val builder = AlertDialog.Builder(this@HabitsActivity)
+        val builder = AlertDialog.Builder(this@HabitsActivity, R.style.MyDialogTheme)
 
         builder.setCancelable(true)
         builder.setTitle("HABIT HISTORY")
@@ -185,5 +189,6 @@ class HabitsActivity : AppCompatActivity() {
         }
         builder.setView(dialogView)
         dialog = builder.create()
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 }

@@ -40,7 +40,7 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this@HomeActivity, HistoryActivity::class.java))
         }
 
-        binding.weekHistory.setOnClickListener {
+        binding.analyzeBtn.setOnClickListener {
             val prev = getPreviousWeek()
             val prevInDays = getPreviousWeekNames()
             updateGraph(prev, prevInDays)
@@ -87,6 +87,14 @@ class HomeActivity : AppCompatActivity() {
                             binding.barChart.description.isEnabled = true
                             binding.barChart.description.text = "Progress percentage per day."
                             binding.barChart.xAxis.valueFormatter = IndexAxisValueFormatter(prevInDays)
+                            binding.barChart.axisLeft.textColor = Color.GRAY
+                            binding.barChart.axisRight.textColor = Color.GRAY
+                            binding.barChart.xAxis.textColor = Color.GRAY
+                            binding.barChart.description.textColor = Color.GRAY
+                            binding.barChart.description.textColor = Color.GRAY
+                            val colors = listOf(Color.GRAY)
+                            binding.barChart.data.setValueTextColors(colors)
+                            binding.barChart.invalidate()
                         }
                     }
                     Log.d("HabitsApp", "updateGraph: habits done : $barArrayList")

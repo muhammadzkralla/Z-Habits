@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:textSize = "42sp"
-        android:textColor="#000"/>
+        android:textColor="@color/titles"/>
 
     <TextView
         android:id="@+id/quote_tv"
@@ -27,7 +27,7 @@
         android:layout_marginStart="10dp"
         android:text="Track Your Habits."
         android:textSize="18sp"
-        android:textColor="#000"
+        android:textColor="@color/light_red"
         app:fontFamily="sans-serif-light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

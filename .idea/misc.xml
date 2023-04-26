@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/button_bg.xml" value="0.138" />
+        <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/dialog_bg.xml" value="0.1" />
+        <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/ic_baseline_format_list_bulleted_24.xml" value="0.138" />
+        <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/ic_baseline_history_24.xml" value="0.138" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/ic_baseline_panorama_fish_eye_24.xml" value="0.137" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/ic_baseline_playlist_add_check_24.xml" value="0.137" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/ic_launcher_background.xml" value="0.137" />

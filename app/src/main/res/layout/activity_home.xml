@@ -10,7 +10,7 @@
         android:id="@+id/habits_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/white"
+        app:cardBackgroundColor="@color/background"
         app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
         app:cardMaxElevation="12dp"
@@ -29,7 +29,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:text="Habits"
-                android:textColor="#000000"
+                android:textColor="@color/titles"
                 android:textSize="18sp"
                 app:fontFamily="serif"
                 android:textStyle="bold"
@@ -43,7 +43,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:text="A list of your habits."
-                android:textColor="#000000"
+                android:textColor="@color/light_red"
                 android:textSize="14sp"
                 app:fontFamily="serif"
                 android:textStyle="italic"
@@ -52,7 +52,7 @@
 
             <ImageView
                 android:layout_width="108dp"
-                android:layout_height="108dp"
+                android:layout_height="92dp"
                 android:src="@drawable/ic_baseline_format_list_bulleted_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -64,7 +64,7 @@
         android:id="@+id/history_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/white"
+        app:cardBackgroundColor="@color/background"
         app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
         app:cardMaxElevation="12dp"
@@ -83,7 +83,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:text="History"
-                android:textColor="#000000"
+                android:textColor="@color/titles"
                 android:textSize="18sp"
                 app:fontFamily="serif"
                 android:textStyle="bold"
@@ -97,7 +97,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:text="History of habits you have done."
-                android:textColor="#000000"
+                android:textColor="@color/light_red"
                 android:textSize="14sp"
                 app:fontFamily="serif"
                 android:textStyle="italic"
@@ -106,7 +106,7 @@
 
             <ImageView
                 android:layout_width="108dp"
-                android:layout_height="108dp"
+                android:layout_height="92dp"
                 android:src="@drawable/ic_baseline_history_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -119,13 +119,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:text="Week History :"
+        android:textColor="@color/variant"
         android:textSize="24sp"
-        android:textColor="#000"
-        android:textStyle="bold"
+
+        app:fontFamily="serif"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/history_card" />
+
+    <Button
+        android:id="@+id/analyze_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="15dp"
+        android:text="Analyze"
+        android:textSize="10sp"
+        android:textColor="@color/orange"
+        android:background="@drawable/button_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/history_card"
+        app:layout_constraintBottom_toTopOf="@+id/barChart"/>
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barChart"
