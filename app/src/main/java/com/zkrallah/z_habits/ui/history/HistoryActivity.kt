@@ -30,7 +30,9 @@ class HistoryActivity : AppCompatActivity() {
                 val adapter = HistoryAdapter(it as MutableList<History>)
                 binding.recyclerHistory.adapter = adapter
                 val layoutManager =
-                    LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+                    LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
+                layoutManager.stackFromEnd = true
+                layoutManager.reverseLayout = true
                 binding.recyclerHistory.layoutManager = layoutManager
 
                 adapter.setItemClickListener(object : HistoryAdapter.OnItemClickListener{

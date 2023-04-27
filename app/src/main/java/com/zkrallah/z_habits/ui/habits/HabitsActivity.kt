@@ -170,9 +170,11 @@ class HabitsActivity : AppCompatActivity() {
         builder.setCancelable(true)
         builder.setTitle("HABIT HISTORY")
         val recycler = dialogView.findViewById<RecyclerView>(R.id.recycler_habit_history)
-        recycler.layoutManager =
-            LinearLayoutManager(this@HabitsActivity, LinearLayoutManager.VERTICAL, false)
-
+        val layoutManager =
+            LinearLayoutManager(this@HabitsActivity, LinearLayoutManager.VERTICAL, true)
+        layoutManager.stackFromEnd = true
+        layoutManager.reverseLayout = true
+        recycler.layoutManager = layoutManager
         viewModel.getHabitHistory(habits.habitId)
         viewModel.habitHistory.observe(this@HabitsActivity) {
             it?.let {
