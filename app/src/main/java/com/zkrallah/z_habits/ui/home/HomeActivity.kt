@@ -1,9 +1,11 @@
 package com.zkrallah.z_habits.ui.home
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -40,11 +42,47 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this@HomeActivity, HistoryActivity::class.java))
         }
 
+        binding.calendarBtn.setOnClickListener {
+            Toast.makeText(this@HomeActivity, "Choose the starting day", Toast.LENGTH_SHORT).show()
+            showSelectTimeDialog()
+        }
+
         binding.analyzeBtn.setOnClickListener {
             val prev = getPreviousWeek()
             val prevInDays = getPreviousWeekNames()
             updateGraph(prev, prevInDays)
         }
+    }
+
+    private fun showSelectTimeDialog() {
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, yearSelected, monthOfYear, dayOfMonth ->
+
+                val newCalendar = Calendar.getInstance()
+                val nameFormatter = SimpleDateFormat("EE", Locale.ROOT)
+                newCalendar.set(yearSelected, monthOfYear, dayOfMonth)
+
+                val days = arrayOfNulls<String>(7)
+                val daysNames = arrayOfNulls<String>(7)
+                for (i in 0..6) {
+                    days[i] = formatter.format(newCalendar.time)
+                    daysNames[i] = nameFormatter.format(newCalendar.time)
+                    newCalendar.add(Calendar.DAY_OF_MONTH, 1)
+                }
+                updateGraph(days, daysNames)
+
+            },
+
+            year,
+            month,
+            day
+        )
+        datePickerDialog.show()
     }
 
     private fun updateGraph(prev: Array<String?>, prevInDays: Array<String?>) {
