@@ -1,7 +1,7 @@
 <h1 align = "center" > Habits Tracker App : <h1/>
 <br>
 
-A Simple Habits Tracking App with Kotlin, Room Database, Kotlin Coroutines and MPAndorid Chart.
+A Simple Habits Tracking App with Kotlin, Room Database, Kotlin Coroutines and MPAndroid Chart.
  
 
 <h2> App Features : <h2/>
