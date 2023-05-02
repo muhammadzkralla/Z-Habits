@@ -13,6 +13,7 @@ A Simple Habits Tracking App with Kotlin, Room Database, Kotlin Coroutines and M
 5- If you want more than the last week history, You can Insert any starting date and it will generate the graph for you starting from this day. <br>
 6- You can delete any habit or any habit history. <br>
 7- You can see all your history of past days. <br>
+8- Get the history of the only selected habit by one-to-many relationship.
 
 <br> <hr>
 The Welcome screen :
