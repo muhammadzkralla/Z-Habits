@@ -19,17 +19,17 @@ class HomeViewModel : ViewModel() {
     val state = _state
 
     fun getHistory(list: Array<String?>){
-        val job = viewModelScope.launch (Dispatchers.IO){
+        viewModelScope.launch (Dispatchers.IO){
             val result = mutableListOf<History>()
-            for (day in list){
-                val fetch = async { database.historyDAO().getAllTodayHistory(day!!) }
-                val response = fetch.await()
-                for (item in response!!) result.add(item)
+            val job = async {
+                for (day in list){
+                    val fetch = async { database.historyDAO().getAllTodayHistory(day!!) }
+                    val response = fetch.await()
+                    for (item in response!!) result.add(item)
+                }
             }
+            job.await()
             _history.postValue(result)
-        }
-        viewModelScope.launch {
-            job.join()
             _state.postValue(true)
         }
     }
