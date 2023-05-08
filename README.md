@@ -14,6 +14,8 @@ A Simple Habits Tracking App with Kotlin, Room Database, Kotlin Coroutines and M
 6- You can delete any habit or any habit history. <br>
 7- You can see all your history of past days. <br>
 8- Get the history of the only selected habit by one-to-many relationship.
+ 
+ <h1 align = "center" > Don't forget to star the repo if you find it useful :D  <h1/>
 
 <br> <hr>
 The Welcome screen :
