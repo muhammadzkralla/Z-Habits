@@ -79,5 +79,11 @@ class HabitsViewModel : ViewModel() {
         }
     }
 
+    fun editHabit(habits: Habits){
+        viewModelScope.launch (Dispatchers.IO) {
+            database.habitsDAO().updateHabit(habits)
+        }
+    }
+
 
 }

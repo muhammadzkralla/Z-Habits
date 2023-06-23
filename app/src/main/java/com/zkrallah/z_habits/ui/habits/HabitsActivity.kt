@@ -97,9 +97,50 @@ class HabitsActivity : AppCompatActivity() {
                         adapter.removeItem(position)
                     }
 
+                    override fun onEditHabitClicked(habits: Habits, position: Int) {
+                        buildEditHabitDialog(habits, position)
+                        dialog.show()
+                    }
+
                 })
             }
         }
+    }
+
+    private fun buildEditHabitDialog(habits: Habits, position: Int) {
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.edit_habit_dialog, null)
+        val edtCount = dialogView.findViewById<EditText>(R.id.edt_habit_count)
+
+        val builder = AlertDialog.Builder(this@HabitsActivity, R.style.MyDialogTheme)
+        builder.setTitle("Edit Habit Count")
+        builder.setCancelable(true)
+        builder.setView(dialogView)
+        builder.setMessage("NOTE THAT TODAY'S HISTORY OF THIS HABIT IS GOING TO BE DELETED !")
+        builder.setPositiveButton("EDIT"){_, _ ->
+            if (edtCount.text.isNotEmpty()){
+                habits.countPerDay = edtCount.text.toString().toInt()
+                adapter.editItem(habits, position)
+                viewModel.editHabit(habits)
+
+                viewModel.checkTodayHistory(habits.habitId, date)
+                viewModel.state.observe(this@HabitsActivity, object : Observer<Boolean>{
+                    override fun onChanged(value: Boolean) {
+                        if (value){
+                            val history: History? = viewModel.history.value
+                            if (history != null) viewModel.deleteHistory(history.historyId)
+                            viewModel.state.removeObserver(this)
+                            viewModel.clearTodayHistory()
+                            viewModel.state.value = false
+                        }
+                    }
+
+                })
+                dialog.dismiss()
+            }
+        }
+        dialog = builder.create()
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     private fun buildStartNewHabitDialog(habits: Habits) {
