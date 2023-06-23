@@ -93,8 +93,8 @@ class HabitsActivity : AppCompatActivity() {
                     }
 
                     override fun onDeleteHabitClicked(habits: Habits, position: Int) {
-                        viewModel.deleteHabit(habits.habitId)
-                        adapter.removeItem(position)
+                        buildDeleteHabitDialog(habits, position)
+                        dialog.show()
                     }
 
                     override fun onEditHabitClicked(habits: Habits, position: Int) {
@@ -105,6 +105,21 @@ class HabitsActivity : AppCompatActivity() {
                 })
             }
         }
+    }
+
+    private fun buildDeleteHabitDialog(habits: Habits, position: Int) {
+        val builder = AlertDialog.Builder(this@HabitsActivity, R.style.MyDialogTheme)
+        builder.setTitle("Delete this Habit ?")
+        builder.setCancelable(true)
+        builder.setMessage("Click DELETE if you want to delete this Habit.")
+        builder.setPositiveButton("DELETE"){_, _ ->
+            viewModel.deleteHabit(habits.habitId)
+            adapter.removeItem(position)
+            dialog.dismiss()
+        }
+
+        dialog = builder.create()
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     private fun buildEditHabitDialog(habits: Habits, position: Int) {
