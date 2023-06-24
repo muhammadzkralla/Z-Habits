@@ -1,9 +1,11 @@
 package com.zkrallah.z_habits.ui.habits
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -218,6 +220,7 @@ class HabitsActivity : AppCompatActivity() {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
+    @SuppressLint("SetTextI18n")
     private fun buildHistoryAlertDialog(habits: Habits) {
         val inflater = this.layoutInflater
         val dialogView = inflater.inflate(R.layout.habit_history_dialog, null)
@@ -226,6 +229,7 @@ class HabitsActivity : AppCompatActivity() {
         builder.setCancelable(true)
         builder.setTitle("HABIT HISTORY")
         val recycler = dialogView.findViewById<RecyclerView>(R.id.recycler_habit_history)
+        val streakTxt = dialogView.findViewById<TextView>(R.id.streak)
         val layoutManager =
             LinearLayoutManager(this@HabitsActivity, LinearLayoutManager.VERTICAL, true)
         layoutManager.stackFromEnd = true
@@ -234,6 +238,7 @@ class HabitsActivity : AppCompatActivity() {
         viewModel.getHabitHistory(habits.habitId)
         viewModel.habitHistory.observe(this@HabitsActivity) {
             it?.let {
+                streakTxt.text = "Current Streak : ${calculateCurrentStreak(it.history)}"
                 val historyAdapter = HistoryAdapter(it.history as MutableList<History>)
                 historyAdapter.setItemClickListener(object : HistoryAdapter.OnItemClickListener{
                     override fun onDeleteClicked(history: History, position: Int) {
@@ -248,5 +253,23 @@ class HabitsActivity : AppCompatActivity() {
         builder.setView(dialogView)
         dialog = builder.create()
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
+
+    private fun calculateCurrentStreak(history: List<History>): Int {
+        var streak = 0
+        val dates = mutableListOf<String>()
+        for (item in history) dates.add(item.date)
+        if (!dates.contains(date)) return 0
+        else{
+            streak++
+            for (i in 0..dates.size){
+                val newCalendar = Calendar.getInstance()
+                newCalendar.add(Calendar.DATE, -(i + 1))
+                val newDate = formatter.format(newCalendar.time).toString()
+                if (dates.contains(newDate)) streak++
+                else break
+            }
+        }
+        return streak
     }
 }
