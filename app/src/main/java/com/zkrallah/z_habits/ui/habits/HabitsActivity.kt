@@ -258,7 +258,8 @@ class HabitsActivity : AppCompatActivity() {
     private fun calculateCurrentStreak(history: List<History>): Int {
         var streak = 0
         val dates = mutableListOf<String>()
-        for (item in history) dates.add(item.date)
+        for (item in history) if (item.countDone != 0) dates.add(item.date)
+
         if (!dates.contains(date)) return 0
         else{
             streak++
