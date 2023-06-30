@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeActivity">
@@ -135,7 +141,7 @@
         android:src="@drawable/ic_baseline_calendar_month_24"
         app:layout_constraintEnd_toStartOf="@+id/analyze_btn"
         app:layout_constraintTop_toBottomOf="@+id/history_card"
-        app:layout_constraintBottom_toTopOf="@+id/barChart"/>
+        app:layout_constraintBottom_toTopOf="@+id/graphs"/>
 
     <Button
         android:id="@+id/analyze_btn"
@@ -150,14 +156,48 @@
         android:background="@drawable/button_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/history_card"
-        app:layout_constraintBottom_toTopOf="@+id/barChart"/>
+        app:layout_constraintBottom_toTopOf="@+id/graphs"/>
 
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/barChart"
-        android:layout_marginTop="10dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/graphs"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/week_history"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/month_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Month History :"
+            android:textColor="@color/variant"
+            android:textSize="24sp"
+            app:fontFamily="serif"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/barChart"
+            app:layout_constraintBottom_toTopOf="@+id/months_barChart" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/months_barChart"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintTop_toBottomOf="@+id/month_history" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

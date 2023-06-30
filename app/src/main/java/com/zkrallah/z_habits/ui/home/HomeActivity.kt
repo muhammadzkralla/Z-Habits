@@ -48,9 +48,12 @@ class HomeActivity : AppCompatActivity() {
         }
 
         binding.analyzeBtn.setOnClickListener {
-            val prev = getPreviousWeek()
-            val prevInDays = getPreviousWeekNames()
-            updateGraph(prev, prevInDays)
+            val prevWeeks = getPreviousWeek()
+            val prevWeeksInDays = getPreviousWeekNames()
+            updateWeeksGraph(prevWeeks, prevWeeksInDays)
+            val prevMonths = getPreviousMonth()
+            val prevMonthsInDays = getPreviousMonthNames()
+            updateMonthsGraph(prevMonths, prevMonthsInDays)
         }
     }
 
@@ -74,7 +77,7 @@ class HomeActivity : AppCompatActivity() {
                     daysNames[i] = nameFormatter.format(newCalendar.time)
                     newCalendar.add(Calendar.DAY_OF_MONTH, 1)
                 }
-                updateGraph(days, daysNames)
+                updateWeeksGraph(days, daysNames)
 
             },
 
@@ -85,7 +88,7 @@ class HomeActivity : AppCompatActivity() {
         datePickerDialog.show()
     }
 
-    private fun updateGraph(prev: Array<String?>, prevInDays: Array<String?>) {
+    private fun updateWeeksGraph(prev: Array<String?>, prevInDays: Array<String?>) {
         viewModel.getHistory(prev)
         viewModel.state.observe(this@HomeActivity, object : Observer<Boolean>{
             override fun onChanged(value: Boolean) {
@@ -145,6 +148,73 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
+    private fun updateMonthsGraph(prev: Array<String?>, prevInDays: Array<String?>) {
+        viewModel.getHistory(prev)
+        viewModel.state.observe(this@HomeActivity, object : Observer<Boolean>{
+            override fun onChanged(value: Boolean) {
+                if (value){
+                    val result = viewModel.history.value
+
+                    val barArrayList = mutableListOf<BarEntry>()
+                    var count = 0f
+
+                    if (result != null) {
+                        Log.d("HabitsApp", "updateGraph: result : $result")
+                        for (day in prev){
+                            var countDone = 0.0
+                            var countPerDay = 0.0
+                            for (res in result){
+                                if (res.date == day){
+                                    countDone += res.countDone
+                                    countPerDay += res.countPerDay
+                                }
+                            }
+                            if (countPerDay != 0.0) {
+                                val percentage = (countDone / countPerDay) * 100
+                                val number2digits:Double = String.format("%.2f", percentage).toDouble()
+                                barArrayList.add(BarEntry(count, number2digits.toFloat()))
+                                count++
+                            }else {
+                                barArrayList.add(BarEntry(count, 0.0f))
+                                count++
+                            }
+                            val barDataSet = BarDataSet(barArrayList, "Days")
+                            barDataSet.colors = ColorTemplate.COLORFUL_COLORS.asList()
+                            barDataSet.setDrawValues(false)
+                            barDataSet.stackLabels = prev
+                            val barData = BarData(barDataSet)
+                            binding.monthsBarChart.data = barData
+                            binding.monthsBarChart.description.isEnabled = true
+                            binding.monthsBarChart.description.text = "Progress percentage per day."
+                            binding.monthsBarChart.xAxis.valueFormatter = IndexAxisValueFormatter(prevInDays)
+
+                            binding.monthsBarChart.axisRight.setLabelCount(10, true)
+                            binding.monthsBarChart.axisLeft.setLabelCount(10, true)
+                            binding.monthsBarChart.axisRight.axisMaximum = 100f
+                            binding.monthsBarChart.axisLeft.axisMaximum = 100f
+                            binding.monthsBarChart.axisRight.axisMinimum = 0f
+                            binding.monthsBarChart.axisLeft.axisMinimum = 0f
+                            binding.monthsBarChart.xAxis.granularity = 1f
+
+                            binding.monthsBarChart.axisLeft.textColor = Color.GRAY
+                            binding.monthsBarChart.axisRight.textColor = Color.GRAY
+                            binding.monthsBarChart.xAxis.textColor = Color.GRAY
+                            binding.monthsBarChart.description.textColor = Color.GRAY
+                            binding.monthsBarChart.description.textColor = Color.GRAY
+                            val colors = listOf(Color.GRAY)
+                            binding.monthsBarChart.data.setValueTextColors(colors)
+                            binding.monthsBarChart.invalidate()
+                        }
+                    }
+                    Log.d("HabitsApp", "updateGraph: habits done : $barArrayList")
+                    viewModel.clear()
+                    viewModel.state.removeObserver(this)
+                }
+            }
+
+        })
+    }
+
     private fun getNextWeek(): Array<String?> {
         val days = arrayOfNulls<String>(7)
         for (i in 0..6) {
@@ -174,6 +244,37 @@ class HomeActivity : AppCompatActivity() {
     private fun getPreviousWeekNames(): Array<String?> {
         this.calendar.add(Calendar.DATE, -6)
         return getNextWeekNames()
+    }
+
+    private fun getNextMonth(): Array<String?> {
+        val days = arrayOfNulls<String>(31)
+        for (i in 0..30) {
+            days[i] = formatter.format(this.calendar.time)
+            this.calendar.add(Calendar.DATE, 1)
+        }
+        this.calendar.add(Calendar.DATE, -1)
+        return days
+    }
+
+    private fun getPreviousMonth(): Array<String?> {
+        this.calendar.add(Calendar.DATE, -30)
+        return getNextMonth()
+    }
+
+    private fun getNextMonthNames(): Array<String?> {
+        val formatter = SimpleDateFormat("dd/MM", Locale.ROOT)
+        val days = arrayOfNulls<String>(31)
+        for (i in 0..30) {
+            days[i] = formatter.format(this.calendar.time)
+            this.calendar.add(Calendar.DATE, 1)
+        }
+        this.calendar.add(Calendar.DATE, -1)
+        return days
+    }
+
+    private fun getPreviousMonthNames(): Array<String?> {
+        this.calendar.add(Calendar.DATE, -30)
+        return getNextMonthNames()
     }
 
 }
