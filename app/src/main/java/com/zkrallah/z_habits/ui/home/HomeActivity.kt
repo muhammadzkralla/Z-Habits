@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
@@ -17,6 +18,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.zkrallah.z_habits.databinding.ActivityHomeBinding
 import com.zkrallah.z_habits.ui.habits.HabitsActivity
 import com.zkrallah.z_habits.ui.history.HistoryActivity
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -42,9 +44,14 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this@HomeActivity, HistoryActivity::class.java))
         }
 
-        binding.calendarBtn.setOnClickListener {
+        binding.weeksCalendarBtn.setOnClickListener {
             Toast.makeText(this@HomeActivity, "Choose the starting day", Toast.LENGTH_SHORT).show()
-            showSelectTimeDialog()
+            showSelectWeekDialog()
+        }
+
+        binding.monthsCalendarBtn.setOnClickListener {
+            Toast.makeText(this@HomeActivity, "Choose the starting day", Toast.LENGTH_SHORT).show()
+            showSelectMonthDialog()
         }
 
         binding.analyzeBtn.setOnClickListener {
@@ -57,7 +64,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun showSelectTimeDialog() {
+    private fun showSelectWeekDialog() {
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
@@ -78,6 +85,37 @@ class HomeActivity : AppCompatActivity() {
                     newCalendar.add(Calendar.DAY_OF_MONTH, 1)
                 }
                 updateWeeksGraph(days, daysNames)
+
+            },
+
+            year,
+            month,
+            day
+        )
+        datePickerDialog.show()
+    }
+
+    private fun showSelectMonthDialog() {
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, yearSelected, monthOfYear, dayOfMonth ->
+
+                val newCalendar = Calendar.getInstance()
+                val nameFormatter = SimpleDateFormat("dd/MM", Locale.ROOT)
+                newCalendar.set(yearSelected, monthOfYear, dayOfMonth)
+
+                val days = arrayOfNulls<String>(31)
+                val daysNames = arrayOfNulls<String>(31)
+                for (i in 0..30) {
+                    days[i] = formatter.format(newCalendar.time)
+                    daysNames[i] = nameFormatter.format(newCalendar.time)
+                    newCalendar.add(Calendar.DAY_OF_MONTH, 1)
+                }
+                updateMonthsGraph(days, daysNames)
 
             },
 
@@ -159,7 +197,7 @@ class HomeActivity : AppCompatActivity() {
                     var count = 0f
 
                     if (result != null) {
-                        Log.d("HabitsApp", "updateGraph: result : $result")
+                        Log.d("HabitsApp", "updateGraph: result : ${result.size}")
                         for (day in prev){
                             var countDone = 0.0
                             var countPerDay = 0.0

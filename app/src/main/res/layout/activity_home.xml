@@ -134,7 +134,7 @@
         app:layout_constraintTop_toBottomOf="@+id/history_card" />
 
     <ImageButton
-        android:id="@+id/calendar_btn"
+        android:id="@+id/weeks_calendar_btn"
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:layout_marginEnd="12dp"
@@ -186,6 +186,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/barChart"
             app:layout_constraintBottom_toTopOf="@+id/months_barChart" />
+
+        <ImageButton
+            android:id="@+id/months_calendar_btn"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginEnd="12dp"
+            android:src="@drawable/ic_baseline_calendar_month_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/barChart"
+            app:layout_constraintBottom_toTopOf="@+id/months_barChart"/>
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/months_barChart"
