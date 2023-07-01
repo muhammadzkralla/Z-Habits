@@ -13,12 +13,16 @@ class HomeViewModel : ViewModel() {
 
     private val database = HabitsDatabase.getInstance()
 
-    private val _history = MutableLiveData<List<History>?>()
-    val history = _history
-    private val _state = MutableLiveData(false)
-    val state = _state
+    private val _weekHistory = MutableLiveData<List<History>?>()
+    val weekHistory = _weekHistory
+    private val _weekState = MutableLiveData(false)
+    val weekState = _weekState
+    private val _monthHistory = MutableLiveData<List<History>?>()
+    val monthHistory = _monthHistory
+    private val _monthState = MutableLiveData(false)
+    val monthState = _monthState
 
-    fun getHistory(list: Array<String?>){
+    fun getWeekHistory(list: Array<String?>){
         viewModelScope.launch (Dispatchers.IO){
             val result = mutableListOf<History>()
             val job = async {
@@ -29,14 +33,35 @@ class HomeViewModel : ViewModel() {
                 }
             }
             job.await()
-            _history.postValue(result)
-            _state.postValue(true)
+            _weekHistory.postValue(result)
+            _weekState.postValue(true)
         }
     }
 
-    fun clear() {
-        _history.value = null
-        _state.value = false
+    fun clearWeek() {
+        _weekHistory.value = null
+        _weekState.value = false
+    }
+
+    fun getMonthHistory(list: Array<String?>){
+        viewModelScope.launch (Dispatchers.IO){
+            val result = mutableListOf<History>()
+            val job = async {
+                for (day in list){
+                    val fetch = async { database.historyDAO().getAllTodayHistory(day!!) }
+                    val response = fetch.await()
+                    for (item in response!!) result.add(item)
+                }
+            }
+            job.await()
+            _monthHistory.postValue(result)
+            _monthState.postValue(true)
+        }
+    }
+
+    fun clearMonth() {
+        _monthHistory.value = null
+        _monthState.value = false
     }
 
 }
