@@ -17,6 +17,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.zkrallah.z_habits.databinding.ActivityHomeBinding
 import com.zkrallah.z_habits.ui.habits.HabitsActivity
 import com.zkrallah.z_habits.ui.history.HistoryActivity
+import com.zkrallah.z_habits.ui.mood.MoodActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,6 +41,10 @@ class HomeActivity : AppCompatActivity() {
 
         binding.historyCard.setOnClickListener {
             startActivity(Intent(this@HomeActivity, HistoryActivity::class.java))
+        }
+
+        binding.modeCard.setOnClickListener {
+            startActivity(Intent(this@HomeActivity, MoodActivity::class.java))
         }
 
         binding.weeksCalendarBtn.setOnClickListener {

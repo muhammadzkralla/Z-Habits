@@ -15,6 +15,10 @@
         android:theme="@style/Theme.ZHabits"
         tools:targetApi="31">
         <activity
+            android:name=".ui.mood.MoodActivity"
+            android:exported="false"
+            android:label="Mood"/>
+        <activity
             android:name=".ui.history.HistoryActivity"
             android:exported="false"
             android:label="History"/>
