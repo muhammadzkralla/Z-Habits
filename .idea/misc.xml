@@ -6,6 +6,7 @@
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.138" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/button_bg.xml" value="0.138" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/dialog_bg.xml" value="0.1" />
+        <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/ic_bad.xml" value="0.1395" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.138" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.138" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.1405" />
@@ -14,7 +15,11 @@
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/ic_baseline_local_fire_department_24.xml" value="0.1405" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/ic_baseline_panorama_fish_eye_24.xml" value="0.137" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/ic_baseline_playlist_add_check_24.xml" value="0.137" />
+        <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/ic_good.xml" value="0.1395" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/ic_launcher_background.xml" value="0.137" />
+        <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/ic_neutral.xml" value="0.1395" />
+        <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/ic_very_bad.xml" value="0.1395" />
+        <entry key="..\:/Android Projects/ZHabits/app/src/main/res/drawable/ic_very_good.xml" value="0.1395" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/layout/activity_daily_progress.xml" value="0.16757246376811594" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/layout/activity_habits.xml" value="0.16757246376811594" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/layout/activity_history.xml" value="0.16757246376811594" />
