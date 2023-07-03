@@ -259,6 +259,38 @@
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintTop_toBottomOf="@+id/month_history" />
 
+        <TextView
+            android:id="@+id/mood_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Mood History :"
+            android:textColor="@color/variant"
+            android:textSize="24sp"
+            app:fontFamily="serif"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/months_barChart"
+            app:layout_constraintBottom_toTopOf="@+id/mood_lineChart" />
+
+        <ImageButton
+            android:id="@+id/mood_calendar_btn"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_margin="20dp"
+            android:src="@drawable/ic_baseline_calendar_month_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/months_barChart"
+            app:layout_constraintBottom_toTopOf="@+id/mood_lineChart"/>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/mood_lineChart"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintTop_toBottomOf="@+id/mood_history"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

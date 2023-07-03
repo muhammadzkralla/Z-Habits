@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zkrallah.z_habits.local.HabitsDatabase
 import com.zkrallah.z_habits.local.entities.History
+import com.zkrallah.z_habits.local.entities.Mood
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -21,6 +22,10 @@ class HomeViewModel : ViewModel() {
     val monthHistory = _monthHistory
     private val _monthState = MutableLiveData(false)
     val monthState = _monthState
+    private val _moodHistory = MutableLiveData<List<Mood>?>()
+    val moodHistory = _moodHistory
+    private val _moodState = MutableLiveData(false)
+    val moodState = _moodState
 
     fun getWeekHistory(list: Array<String?>){
         viewModelScope.launch (Dispatchers.IO){
@@ -62,6 +67,27 @@ class HomeViewModel : ViewModel() {
     fun clearMonth() {
         _monthHistory.value = null
         _monthState.value = false
+    }
+
+    fun getMonthMoodHistory(list: Array<String?>){
+        viewModelScope.launch (Dispatchers.IO){
+            val result = mutableListOf<Mood>()
+            val job = async {
+                for (day in list){
+                    val fetch = async { database.moodDAO().getTodayMood(day!!) }
+                    val response = fetch.await()
+                    if (response != null) result.add(response)
+                }
+            }
+            job.await()
+            _moodHistory.postValue(result)
+            _moodState.postValue(true)
+        }
+    }
+
+    fun clearMood() {
+        _moodHistory.value = null
+        _moodState.value = false
     }
 
 }

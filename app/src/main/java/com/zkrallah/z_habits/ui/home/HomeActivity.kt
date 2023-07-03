@@ -9,9 +9,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.zkrallah.z_habits.databinding.ActivityHomeBinding
@@ -57,6 +56,11 @@ class HomeActivity : AppCompatActivity() {
             showSelectMonthDialog()
         }
 
+        binding.moodCalendarBtn.setOnClickListener {
+            Toast.makeText(this@HomeActivity, "Choose the starting day", Toast.LENGTH_SHORT).show()
+            showSelectMoodMonthDialog()
+        }
+
         binding.analyzeBtn.setOnClickListener {
             val prevWeeks = getPreviousWeek()
             val prevWeeksInDays = getPreviousWeekNames()
@@ -64,6 +68,7 @@ class HomeActivity : AppCompatActivity() {
             val prevMonths = getPreviousMonth()
             val prevMonthsInDays = getPreviousMonthNames()
             updateMonthsGraph(prevMonths, prevMonthsInDays)
+            updateMoodGraph(prevMonths, prevMonthsInDays)
         }
     }
 
@@ -119,6 +124,37 @@ class HomeActivity : AppCompatActivity() {
                     newCalendar.add(Calendar.DAY_OF_MONTH, 1)
                 }
                 updateMonthsGraph(days, daysNames)
+
+            },
+
+            year,
+            month,
+            day
+        )
+        datePickerDialog.show()
+    }
+
+    private fun showSelectMoodMonthDialog() {
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, yearSelected, monthOfYear, dayOfMonth ->
+
+                val newCalendar = Calendar.getInstance()
+                val nameFormatter = SimpleDateFormat("dd/MM", Locale.ROOT)
+                newCalendar.set(yearSelected, monthOfYear, dayOfMonth)
+
+                val days = arrayOfNulls<String>(31)
+                val daysNames = arrayOfNulls<String>(31)
+                for (i in 0..30) {
+                    days[i] = formatter.format(newCalendar.time)
+                    daysNames[i] = nameFormatter.format(newCalendar.time)
+                    newCalendar.add(Calendar.DAY_OF_MONTH, 1)
+                }
+                updateMoodGraph(days, daysNames)
 
             },
 
@@ -254,6 +290,67 @@ class HomeActivity : AppCompatActivity() {
                     Log.d("HabitsApp", "updateGraph: habits done : $barArrayList")
                     viewModel.clearMonth()
                     viewModel.monthState.removeObserver(this)
+                }
+            }
+
+        })
+    }
+
+    private fun updateMoodGraph(prev: Array<String?>, prevInDays: Array<String?>) {
+        viewModel.getMonthMoodHistory(prev)
+        viewModel.moodState.observe(this, object : Observer<Boolean>{
+            override fun onChanged(value: Boolean) {
+                if (value){
+                    val result = viewModel.moodHistory.value
+                    val entryArrayList = mutableListOf<Entry>()
+                    var count = 0f
+                    if (result != null){
+                        for (day in prev){
+                            var found = false
+                            for (res in result){
+                                if (res.date == day){
+                                    found = true
+                                    entryArrayList.add(Entry(count, res.value.toFloat()))
+                                    count++
+                                    break
+                                }
+                            }
+                            if (!found){
+                                entryArrayList.add(Entry(count, 0f))
+                                count++
+                            }
+                        }
+                        val lineDataSet = LineDataSet(entryArrayList, "Days")
+                        lineDataSet.colors = ColorTemplate.COLORFUL_COLORS.asList()
+                        lineDataSet.setDrawValues(false)
+                        val data = LineData(lineDataSet)
+
+                        binding.moodLineChart.data = data
+                        binding.moodLineChart.xAxis.valueFormatter =
+                            IndexAxisValueFormatter(prevInDays)
+                        binding.moodLineChart.description.isEnabled = true
+                        binding.moodLineChart.description.text = "Mood status per day."
+
+                        binding.moodLineChart.axisRight.setLabelCount(6, true)
+                        binding.moodLineChart.axisLeft.setLabelCount(6, true)
+                        binding.moodLineChart.axisRight.axisMaximum = 5f
+                        binding.moodLineChart.axisLeft.axisMaximum = 5f
+                        binding.moodLineChart.axisRight.axisMinimum = 0f
+                        binding.moodLineChart.axisLeft.axisMinimum = 0f
+                        binding.moodLineChart.xAxis.granularity = 1f
+
+                        binding.moodLineChart.axisLeft.textColor = Color.GRAY
+                        binding.moodLineChart.axisRight.textColor = Color.GRAY
+                        binding.moodLineChart.xAxis.textColor = Color.GRAY
+                        binding.moodLineChart.description.textColor = Color.GRAY
+                        binding.moodLineChart.description.textColor = Color.GRAY
+                        val colors = listOf(Color.GRAY)
+                        binding.moodLineChart.data.setValueTextColors(colors)
+                        binding.moodLineChart.invalidate()
+
+                        viewModel.clearMood()
+                        viewModel.moodState.removeObserver(this)
+                    }
                 }
             }
 
