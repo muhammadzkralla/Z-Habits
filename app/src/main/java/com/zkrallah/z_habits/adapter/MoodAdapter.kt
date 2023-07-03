@@ -49,6 +49,15 @@ class MoodAdapter(private val list: MutableList<Mood>,private val context: Conte
         return list.size
     }
 
+    fun addItem(mood: Mood){
+        list.add(mood)
+        notifyItemInserted(list.size)
+    }
+    fun editItem(mood: Mood){
+        list[list.size - 1] = mood
+        notifyItemChanged(list.size - 1)
+    }
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val date: TextView = itemView.findViewById(R.id.date)
         val value: TextView = itemView.findViewById(R.id.value)

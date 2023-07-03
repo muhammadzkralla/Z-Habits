@@ -17,6 +17,7 @@ class MoodActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMoodBinding
     private lateinit var viewModel: MoodViewModel
+    private lateinit var adapter: MoodAdapter
     private val calendar: Calendar = Calendar.getInstance()
     private val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT)
     val date = formatter.format(calendar.time).toString()
@@ -45,19 +46,20 @@ class MoodActivity : AppCompatActivity() {
                 viewModel.state.observe(this@MoodActivity, object : Observer<Boolean> {
                     override fun onChanged(value: Boolean) {
                         if (value) {
-                            val mood = viewModel.mood.value
+                            var mood = viewModel.mood.value
                             if (mood != null) {
                                 mood.value = selected
                                 mood.message = binding.edtMessage.text.toString()
                                 viewModel.updateMood(mood)
+                                adapter.editItem(mood)
                                 Toast.makeText(this@MoodActivity, "Updated !", Toast.LENGTH_SHORT)
                                     .show()
                             } else {
-                                viewModel.insertMood(
-                                    Mood(
-                                        selected, binding.edtMessage.text.toString(), date
-                                    )
+                                mood = Mood(
+                                    selected, binding.edtMessage.text.toString(), date
                                 )
+                                viewModel.insertMood(mood)
+                                adapter.addItem(mood)
                                 Toast.makeText(this@MoodActivity, "Inserted !", Toast.LENGTH_SHORT)
                                     .show()
                             }
@@ -106,7 +108,7 @@ class MoodActivity : AppCompatActivity() {
         viewModel.getMoodHistory()
         viewModel.moodHistory.observe(this) {
             it?.let {
-                val adapter = MoodAdapter(it as MutableList<Mood>, this@MoodActivity)
+                adapter = MoodAdapter(it as MutableList<Mood>, this@MoodActivity)
                 binding.recyclerMood.adapter = adapter
                 val layoutManager =
                     LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
