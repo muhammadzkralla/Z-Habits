@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.zkrallah.z_habits.databinding.ActivityHomeBinding
@@ -298,24 +297,24 @@ class HomeActivity : AppCompatActivity() {
 
     private fun updateMoodGraph(prev: Array<String?>, prevInDays: Array<String?>) {
         viewModel.getMonthMoodHistory(prev)
-        viewModel.moodState.observe(this, object : Observer<Boolean>{
+        viewModel.moodState.observe(this, object : Observer<Boolean> {
             override fun onChanged(value: Boolean) {
-                if (value){
+                if (value) {
                     val result = viewModel.moodHistory.value
                     val entryArrayList = mutableListOf<Entry>()
                     var count = 0f
-                    if (result != null){
-                        for (day in prev){
+                    if (result != null) {
+                        for (day in prev) {
                             var found = false
-                            for (res in result){
-                                if (res.date == day){
+                            for (res in result) {
+                                if (res.date == day) {
                                     found = true
                                     entryArrayList.add(Entry(count, res.value.toFloat()))
                                     count++
                                     break
                                 }
                             }
-                            if (!found){
+                            if (!found) {
                                 entryArrayList.add(Entry(count, 0f))
                                 count++
                             }
@@ -339,8 +338,8 @@ class HomeActivity : AppCompatActivity() {
                         binding.moodLineChart.axisLeft.axisMinimum = 0f
                         binding.moodLineChart.xAxis.granularity = 1f
 
-                        binding.moodLineChart.axisLeft.textColor = Color.GRAY
-                        binding.moodLineChart.axisRight.textColor = Color.GRAY
+                        binding.moodLineChart.axisLeft.setDrawLabels(false)
+                        binding.moodLineChart.axisRight.setDrawLabels(false)
                         binding.moodLineChart.xAxis.textColor = Color.GRAY
                         binding.moodLineChart.description.textColor = Color.GRAY
                         binding.moodLineChart.description.textColor = Color.GRAY

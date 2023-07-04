@@ -41,7 +41,6 @@ class MoodAdapter(private val list: MutableList<Mood>,private val context: Conte
         holder.date.text = list[position].date
         holder.value.text = "Status : ${map[list[position].value]}"
         holder.message.text = "Message : ${list[position].message}"
-        holder.id.text = list[position].moodId.toString()
         Glide.with(context).load(imagesMap[list[position].value]).into(holder.image)
     }
 
@@ -62,7 +61,6 @@ class MoodAdapter(private val list: MutableList<Mood>,private val context: Conte
         val date: TextView = itemView.findViewById(R.id.date)
         val value: TextView = itemView.findViewById(R.id.value)
         val message: TextView = itemView.findViewById(R.id.message)
-        val id: TextView = itemView.findViewById(R.id.mood_id)
         val image: ImageView = itemView.findViewById(R.id.mood_image)
     }
 }

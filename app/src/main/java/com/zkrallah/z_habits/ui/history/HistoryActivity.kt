@@ -102,7 +102,7 @@ class HistoryActivity : AppCompatActivity() {
                     val inflater = layoutInflater
                     val dialogView = inflater.inflate(R.layout.day_details_dialog, null)
                     val builder = AlertDialog.Builder(this@HistoryActivity, R.style.MyDialogTheme)
-                    builder.setNegativeButton("OK"){_, _ ->
+                    builder.setNegativeButton("OK") { _, _ ->
                         dialog.dismiss()
                     }
 
