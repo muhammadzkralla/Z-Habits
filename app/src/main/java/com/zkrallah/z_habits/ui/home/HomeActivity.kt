@@ -213,6 +213,8 @@ class HomeActivity : AppCompatActivity() {
                             binding.barChart.description.textColor = Color.GRAY
                             val colors = listOf(Color.GRAY)
                             binding.barChart.data.setValueTextColors(colors)
+
+                            binding.barChart.animateXY(1500, 1500)
                             binding.barChart.invalidate()
                         }
                     }
@@ -283,6 +285,8 @@ class HomeActivity : AppCompatActivity() {
                             binding.monthsBarChart.description.textColor = Color.GRAY
                             val colors = listOf(Color.GRAY)
                             binding.monthsBarChart.data.setValueTextColors(colors)
+
+                            binding.monthsBarChart.animateXY(1500, 1500)
                             binding.monthsBarChart.invalidate()
                         }
                     }
@@ -345,6 +349,7 @@ class HomeActivity : AppCompatActivity() {
                         binding.moodLineChart.description.textColor = Color.GRAY
                         val colors = listOf(Color.GRAY)
                         binding.moodLineChart.data.setValueTextColors(colors)
+                        binding.moodLineChart.animateXY(1500, 1500)
                         binding.moodLineChart.invalidate()
 
                         viewModel.clearMood()
