@@ -26,6 +26,10 @@ class HomeViewModel : ViewModel() {
     val moodHistory = _moodHistory
     private val _moodState = MutableLiveData(false)
     val moodState = _moodState
+    private val _allTimeHistory = MutableLiveData<List<History>?>()
+    val allTimeHistory = _allTimeHistory
+    private val _allTimeState = MutableLiveData(false)
+    val allTimeStatus = _allTimeState
 
     fun getWeekHistory(list: Array<String?>){
         viewModelScope.launch (Dispatchers.IO){
@@ -88,6 +92,19 @@ class HomeViewModel : ViewModel() {
     fun clearMood() {
         _moodHistory.value = null
         _moodState.value = false
+    }
+
+    fun getAllTimeHistory(){
+        viewModelScope.launch (Dispatchers.IO){
+            val job = async { database.historyDAO().getHistory() }
+            _allTimeHistory.postValue(job.await())
+            _allTimeState.postValue(true)
+        }
+    }
+
+    fun clearAllTimeHistory(){
+        _allTimeHistory.value = null
+        _allTimeState.value = false
     }
 
 }

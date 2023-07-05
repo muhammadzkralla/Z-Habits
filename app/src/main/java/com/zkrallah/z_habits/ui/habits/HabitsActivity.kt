@@ -169,7 +169,7 @@ class HabitsActivity : AppCompatActivity() {
             val history = History(
                 habits.habitId,
                 habits.name,
-                1,
+                0,
                 habits.countPerDay,
                 date
             )

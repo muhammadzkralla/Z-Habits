@@ -291,6 +291,28 @@
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintTop_toBottomOf="@+id/mood_history"/>
 
+        <TextView
+            android:id="@+id/all_time_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="All-time History :"
+            android:textColor="@color/variant"
+            android:textSize="24sp"
+            app:fontFamily="serif"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mood_lineChart"
+            app:layout_constraintBottom_toTopOf="@+id/horizontal_bar_chart" />
+
+        <com.github.mikephil.charting.charts.HorizontalBarChart
+            android:id="@+id/horizontal_bar_chart"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/all_time_history"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

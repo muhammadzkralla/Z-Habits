@@ -68,6 +68,7 @@ class HomeActivity : AppCompatActivity() {
             val prevMonthsInDays = getPreviousMonthNames()
             updateMonthsGraph(prevMonths, prevMonthsInDays)
             updateMoodGraph(prevMonths, prevMonthsInDays)
+            updateAllTimeHistoryGraph()
         }
     }
 
@@ -355,6 +356,60 @@ class HomeActivity : AppCompatActivity() {
                         viewModel.clearMood()
                         viewModel.moodState.removeObserver(this)
                     }
+                }
+            }
+
+        })
+    }
+
+    private fun updateAllTimeHistoryGraph() {
+        viewModel.getAllTimeHistory()
+        viewModel.allTimeStatus.observe(this@HomeActivity, object : Observer<Boolean>{
+            override fun onChanged(value: Boolean) {
+                if (value){
+                    val result = viewModel.allTimeHistory.value
+                    val barArrayList = mutableListOf<BarEntry>()
+                    val map = mutableMapOf<String, Float>()
+                    var count = 0f
+
+                    if (result != null){
+                        for (item in result){
+                            if (map.containsKey(item.habitName))
+                                map[item.habitName] = map[item.habitName]!! + item.countDone
+                            else
+                                map[item.habitName] = item.countDone.toFloat()
+                        }
+                        for (key in map.keys){
+                            barArrayList.add(BarEntry(count, map[key]!!))
+                            count++
+                        }
+                        val barDataSet = BarDataSet(barArrayList, "Habits")
+                        barDataSet.colors = ColorTemplate.COLORFUL_COLORS.asList()
+                        barDataSet.valueTextColor = Color.BLACK
+                        barDataSet.valueTextSize = 10f
+                        val barData = BarData(barDataSet)
+                        binding.horizontalBarChart.xAxis.valueFormatter =
+                            IndexAxisValueFormatter(map.keys)
+                        binding.horizontalBarChart.xAxis.textColor = Color.GRAY
+                        binding.horizontalBarChart.xAxis.textSize = 12f
+                        binding.horizontalBarChart.xAxis.granularity = 1f
+
+                        binding.horizontalBarChart.data = barData
+
+                        binding.horizontalBarChart.description.isEnabled = true
+                        binding.horizontalBarChart.description.text = "Habits total count."
+                        binding.horizontalBarChart.axisLeft.textColor = Color.GRAY
+                        binding.horizontalBarChart.axisRight.setDrawLabels(false)
+                        binding.horizontalBarChart.description.textColor = Color.GRAY
+                        binding.horizontalBarChart.description.textColor = Color.GRAY
+                        val colors = listOf(Color.GRAY)
+                        binding.horizontalBarChart.data.setValueTextColors(colors)
+
+                        binding.horizontalBarChart.animateXY(1500, 1500)
+                        binding.horizontalBarChart.invalidate()
+                    }
+                    viewModel.clearAllTimeHistory()
+                    viewModel.allTimeStatus.removeObserver(this)
                 }
             }
 
