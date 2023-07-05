@@ -188,9 +188,8 @@ class HomeActivity : AppCompatActivity() {
                             }
                             if (countPerDay != 0.0) {
                                 val percentage = (countDone / countPerDay) * 100
-                                val number2digits: Double =
-                                    String.format("%.2f", percentage).toDouble()
-                                barArrayList.add(BarEntry(count, number2digits.toFloat()))
+
+                                barArrayList.add(BarEntry(count, percentage.toFloat()))
                                 count++
                             } else {
                                 barArrayList.add(BarEntry(count, 0.0f))
@@ -252,9 +251,7 @@ class HomeActivity : AppCompatActivity() {
                             }
                             if (countPerDay != 0.0) {
                                 val percentage = (countDone / countPerDay) * 100
-                                val number2digits: Double =
-                                    String.format("%.2f", percentage).toDouble()
-                                barArrayList.add(BarEntry(count, number2digits.toFloat()))
+                                barArrayList.add(BarEntry(count, percentage.toFloat()))
                                 count++
                             } else {
                                 barArrayList.add(BarEntry(count, 0.0f))

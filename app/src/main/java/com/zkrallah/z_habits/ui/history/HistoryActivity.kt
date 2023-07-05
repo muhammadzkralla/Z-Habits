@@ -22,6 +22,7 @@ import com.zkrallah.z_habits.R
 import com.zkrallah.z_habits.adapter.HistoryAdapter
 import com.zkrallah.z_habits.databinding.ActivityHistoryBinding
 import com.zkrallah.z_habits.local.entities.History
+import java.math.RoundingMode
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -147,9 +148,8 @@ class HistoryActivity : AppCompatActivity() {
 
                     if (countPerDay != 0.0) {
                         val percentage = (countDone / countPerDay) * 100
-                        val number2digits: Double =
-                            String.format("%.2f", percentage).toDouble()
-                        progress.text = "Progress : $number2digits%"
+                        val roundedUp = percentage.toBigDecimal().setScale(2, RoundingMode.UP).toDouble()
+                        progress.text = "Progress : $roundedUp%"
                     }
 
                     viewModel.clearDetails()
