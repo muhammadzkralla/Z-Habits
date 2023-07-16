@@ -36,6 +36,7 @@ class HistoryAdapter(private val list: MutableList<History>) : RecyclerView.Adap
         holder.habitName.text = list[position].habitName
         holder.date.text = list[position].date
         holder.habitCount.text = "${list[position].countDone} from ${list[position].countPerDay}"
+        holder.message.text = list[position].message
     }
 
     override fun getItemCount(): Int {
@@ -50,6 +51,7 @@ class HistoryAdapter(private val list: MutableList<History>) : RecyclerView.Adap
         val habitName: TextView = itemView.findViewById(R.id.habit_name)
         val date: TextView = itemView.findViewById(R.id.date)
         val habitCount: TextView = itemView.findViewById(R.id.count)
+        val message: TextView = itemView.findViewById(R.id.msg_txt)
         private val deleteBtn: ImageButton = itemView.findViewById(R.id.delete)
 
         init {

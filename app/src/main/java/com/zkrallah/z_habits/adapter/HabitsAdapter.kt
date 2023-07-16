@@ -21,6 +21,7 @@ class HabitsAdapter(private val list: MutableList<Habits>) :
         fun onAddCountClicked(habits: Habits)
         fun onDeleteHabitClicked(habits: Habits, position: Int)
         fun onEditHabitClicked(habits: Habits, position: Int)
+        fun onMessageClicked(habits: Habits)
 
     }
 
@@ -63,6 +64,7 @@ class HabitsAdapter(private val list: MutableList<Habits>) :
         private val addCount: ImageButton = itemView.findViewById(R.id.add_count)
         private val deleteBtn: ImageButton = itemView.findViewById(R.id.delete_habit)
         private val editBtn: ImageButton = itemView.findViewById(R.id.update_count)
+        private val msgBtn: ImageButton = itemView.findViewById(R.id.message_btn)
 
         init {
             showHistory.setOnClickListener {
@@ -76,6 +78,9 @@ class HabitsAdapter(private val list: MutableList<Habits>) :
             }
             editBtn.setOnClickListener {
                 listener.onEditHabitClicked(list[adapterPosition], adapterPosition)
+            }
+            msgBtn.setOnClickListener {
+                listener.onMessageClicked(list[adapterPosition])
             }
         }
     }

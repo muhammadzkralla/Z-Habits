@@ -1,5 +1,6 @@
 package com.zkrallah.z_habits.local
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -10,7 +11,10 @@ import com.zkrallah.z_habits.local.entities.Habits
 import com.zkrallah.z_habits.local.entities.History
 import com.zkrallah.z_habits.local.entities.Mood
 
-@Database(entities = [Habits::class, History::class, Mood::class], version = 3, exportSchema = true)
+@Database(entities = [Habits::class, History::class, Mood::class],
+    version = 4,
+    exportSchema = true,
+    autoMigrations = [AutoMigration(from = 3,to = 4)])
 abstract class HabitsDatabase : RoomDatabase(){
     abstract fun habitsDAO(): HabitsDAO
     abstract fun historyDAO(): HistoryDAO

@@ -54,6 +54,16 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
+            android:id="@+id/message_btn"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="15dp"
+            android:src="@drawable/ic_baseline_message_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/update_count" />
+
+        <ImageButton
             android:id="@+id/update_count"
             android:layout_width="18dp"
             android:layout_height="18dp"

@@ -104,9 +104,60 @@ class HabitsActivity : AppCompatActivity() {
                         dialog.show()
                     }
 
+                    override fun onMessageClicked(habits: Habits) {
+                        viewModel.checkTodayHistory(habits.habitId, date)
+
+                        viewModel.state.observe(this@HabitsActivity, object : Observer<Boolean>{
+                            override fun onChanged(value: Boolean) {
+                                if (value){
+                                    val history: History? = viewModel.history.value
+                                    if (history != null) {
+                                        buildMessageDialog(history)
+                                        dialog.show()
+                                    }else{
+                                        Toast.
+                                        makeText(this@HabitsActivity,
+                                            "No History today to leave a message with",
+                                            Toast.LENGTH_SHORT).show()
+                                    }
+                                    viewModel.state.removeObserver(this)
+                                    viewModel.clearTodayHistory()
+                                    viewModel.state.value = false
+                                }
+                            }
+                        }
+                        )
+                    }
+
                 })
             }
         }
+    }
+
+    private fun buildMessageDialog(history: History) {
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.msg_dialog, null)
+        val edtMessage = dialogView.findViewById<EditText>(R.id.edt_msg)
+
+        val builder = AlertDialog.Builder(this@HabitsActivity, R.style.MyDialogTheme)
+        builder.setTitle("Leave a message...")
+        builder.setCancelable(true)
+        builder.setView(dialogView)
+
+        edtMessage.setText(history.message)
+
+        builder.setPositiveButton("SUBMIT"){_, _ ->
+            history.message = edtMessage.text.toString()
+            viewModel.updateHistory(history)
+            Snackbar.make(
+                binding.root,
+                "Message submitted !",
+                Snackbar.LENGTH_SHORT
+            ).show()
+            dialog.dismiss()
+        }
+        dialog = builder.create()
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     private fun buildDeleteHabitDialog(habits: Habits, position: Int) {

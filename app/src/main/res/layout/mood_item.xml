@@ -53,6 +53,7 @@
             android:paddingBottom="10dp"
             android:maxWidth="200dp"
             android:text="Message"
+            android:textIsSelectable="true"
             android:textColor="@color/light_red"
             android:textSize="14sp"
             android:textStyle="italic"

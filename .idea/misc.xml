@@ -32,8 +32,10 @@
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/layout/edit_habit_dialog.xml" value="0.17708333333333334" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/layout/habit_history_dialog.xml" value="0.264" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/layout/habit_item.xml" value="0.264" />
-        <entry key="..\:/Android Projects/ZHabits/app/src/main/res/layout/history_item.xml" value="0.4" />
+        <entry key="..\:/Android Projects/ZHabits/app/src/main/res/layout/history_item.xml" value="0.2" />
+        <entry key="..\:/Android Projects/ZHabits/app/src/main/res/layout/leave_msg_dialog.xml" value="0.17391304347826086" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/layout/mood_item.xml" value="0.17391304347826086" />
+        <entry key="..\:/Android Projects/ZHabits/app/src/main/res/layout/msg_dialog.xml" value="0.17391304347826086" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/menu/menu.xml" value="0.21979166666666666" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.137" />
         <entry key="..\:/Android Projects/ZHabits/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.137" />

@@ -1,5 +1,6 @@
 package com.zkrallah.z_habits.local.entities
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -9,7 +10,9 @@ data class History(
     var habitName: String,
     var countDone: Int,
     var countPerDay: Int,
-    var date: String
+    var date: String,
+    @ColumnInfo(name = "message", defaultValue = "")
+    var message: String = ""
 ) {
     @PrimaryKey(autoGenerate = true)
     var historyId: Long = 0L

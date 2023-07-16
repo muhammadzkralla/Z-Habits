@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.zkrallah.z_habits.adapter.MoodAdapter
 import com.zkrallah.z_habits.databinding.ActivityMoodBinding
 import com.zkrallah.z_habits.local.entities.Mood
@@ -52,16 +53,22 @@ class MoodActivity : AppCompatActivity() {
                                 mood.message = binding.edtMessage.text.toString()
                                 viewModel.updateMood(mood)
                                 adapter.editItem(mood)
-                                Toast.makeText(this@MoodActivity, "Updated !", Toast.LENGTH_SHORT)
-                                    .show()
+                                Snackbar.make(
+                                    binding.root,
+                                    "Updated !",
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
                             } else {
                                 mood = Mood(
                                     selected, binding.edtMessage.text.toString(), date
                                 )
                                 viewModel.insertMood(mood)
                                 adapter.addItem(mood)
-                                Toast.makeText(this@MoodActivity, "Inserted !", Toast.LENGTH_SHORT)
-                                    .show()
+                                Snackbar.make(
+                                    binding.root,
+                                    "Inserted !",
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
                             }
 
                             viewModel.state.removeObserver(this)
@@ -71,7 +78,11 @@ class MoodActivity : AppCompatActivity() {
 
                 })
             } else
-                Toast.makeText(this@MoodActivity, "No Status Selected !", Toast.LENGTH_SHORT).show()
+                Snackbar.make(
+                    binding.root,
+                    "No Status Selected !",
+                    Snackbar.LENGTH_SHORT
+                ).show()
 
         }
     }
