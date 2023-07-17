@@ -376,8 +376,11 @@ class HomeActivity : AppCompatActivity() {
                             else
                                 map[item.habitName] = item.countDone.toFloat()
                         }
-                        for (key in map.keys){
-                            barArrayList.add(BarEntry(count, map[key]!!))
+
+                        val sorted = map.toList().sortedBy { (_, value) -> value}.toMap()
+
+                        for (key in sorted.keys){
+                            barArrayList.add(BarEntry(count, sorted[key]!!))
                             count++
                         }
                         val barDataSet = BarDataSet(barArrayList, "Habits")
@@ -386,7 +389,7 @@ class HomeActivity : AppCompatActivity() {
                         barDataSet.valueTextSize = 10f
                         val barData = BarData(barDataSet)
                         binding.horizontalBarChart.xAxis.valueFormatter =
-                            IndexAxisValueFormatter(map.keys)
+                            IndexAxisValueFormatter(sorted.keys)
                         binding.horizontalBarChart.xAxis.textColor = Color.GRAY
                         binding.horizontalBarChart.xAxis.textSize = 12f
                         binding.horizontalBarChart.xAxis.granularity = 1f

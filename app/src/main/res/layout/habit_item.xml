@@ -21,6 +21,7 @@
             android:id="@+id/habit_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxWidth="180dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
             android:text="Habit Name"
@@ -59,7 +60,9 @@
             android:layout_height="18dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="15dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/ic_baseline_message_24"
+            app:layout_constraintTop_toBottomOf="@+id/habit_count"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/update_count" />
 
@@ -69,7 +72,9 @@
             android:layout_height="18dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="15dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/ic_baseline_edit_24"
+            app:layout_constraintTop_toBottomOf="@+id/habit_count"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/show_history" />
 
@@ -79,7 +84,9 @@
             android:layout_height="18dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="15dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/ic_baseline_history_24"
+            app:layout_constraintTop_toBottomOf="@+id/habit_count"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/add_count" />
 
@@ -89,7 +96,9 @@
             android:layout_height="18dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="15dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/ic_baseline_playlist_add_check_24"
+            app:layout_constraintTop_toBottomOf="@+id/habit_count"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/delete_habit" />
 
@@ -99,7 +108,9 @@
             android:layout_height="18dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="15dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/ic_baseline_delete_24"
+            app:layout_constraintTop_toBottomOf="@+id/habit_count"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/img" />
 
