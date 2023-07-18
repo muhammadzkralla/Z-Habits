@@ -332,12 +332,12 @@ class HomeActivity : AppCompatActivity() {
                         binding.moodLineChart.description.isEnabled = true
                         binding.moodLineChart.description.text = "Mood status per day."
 
-                        binding.moodLineChart.axisRight.setLabelCount(6, true)
-                        binding.moodLineChart.axisLeft.setLabelCount(6, true)
+                        binding.moodLineChart.axisRight.setLabelCount(5, true)
+                        binding.moodLineChart.axisLeft.setLabelCount(5, true)
                         binding.moodLineChart.axisRight.axisMaximum = 5f
                         binding.moodLineChart.axisLeft.axisMaximum = 5f
-                        binding.moodLineChart.axisRight.axisMinimum = 0f
-                        binding.moodLineChart.axisLeft.axisMinimum = 0f
+                        binding.moodLineChart.axisRight.axisMinimum = 1f
+                        binding.moodLineChart.axisLeft.axisMinimum = 1f
                         binding.moodLineChart.xAxis.granularity = 1f
 
                         binding.moodLineChart.axisLeft.setDrawLabels(false)
